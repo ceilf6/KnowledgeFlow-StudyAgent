@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KnowledgeFlow - AI智能体驱动的学习平台，让知识轻松流入你的脑海</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            min-height: 100vh;
+            color: #f8fafc;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 60px 20px 40px;
+        }
+
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #10B981, #06B6D4);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #10B981, #06B6D4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 16px;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: #94a3b8;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            padding: 40px 0;
+        }
+
+        .feature-card {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 20px;
+            padding: 32px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #10B981, #06B6D4);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(16, 185, 129, 0.5);
+            box-shadow: 0 25px 50px -12px rgba(16, 185, 129, 0.25);
+        }
+
+        .feature-icon {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #10B981, #06B6D4);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #f1f5f9;
+        }
+
+        .feature-card p {
+            color: #94a3b8;
+            line-height: 1.6;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 24px;
+            padding: 40px 0;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 32px;
+            background: rgba(30, 41, 59, 0.6);
+            border-radius: 16px;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #10B981, #06B6D4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        .workflow {
+            padding: 40px 0;
+        }
+
+        .workflow h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 40px;
+            color: #f1f5f9;
+        }
+
+        .workflow-steps {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 32px;
+        }
+
+        .step {
+            text-align: center;
+            max-width: 200px;
+        }
+
+        .step-number {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #10B981, #06B6D4);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin: 0 auto 16px;
+        }
+
+        .step-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #f1f5f9;
+        }
+
+        .step-desc {
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        .target-users {
+            padding: 40px 0;
+        }
+
+        .target-users h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 40px;
+            color: #f1f5f9;
+        }
+
+        .user-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+        }
+
+        .user-card {
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .user-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, #F59E0B, #EF4444);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin: 0 auto 16px;
+        }
+
+        .user-card:nth-child(2) .user-icon {
+            background: linear-gradient(135deg, #3B82F6, #8B5CF6);
+        }
+
+        .user-card:nth-child(3) .user-icon {
+            background: linear-gradient(135deg, #06B6D4, #10B981);
+        }
+
+        .user-card:nth-child(4) .user-icon {
+            background: linear-gradient(135deg, #EC4899, #F59E0B);
+        }
+
+        .user-card h4 {
+            margin-bottom: 8px;
+            color: #f1f5f9;
+        }
+
+        .user-card p {
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid rgba(148, 163, 184, 0.1);
+            margin-top: 40px;
+        }
+
+        footer p {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .cta {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+            color: #f1f5f9;
+        }
+
+        .cta p {
+            color: #94a3b8;
+            font-size: 1.1rem;
+            margin-bottom: 32px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 14px 32px;
+            background: linear-gradient(135deg, #10B981, #06B6D4);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px rgba(16, 185, 129, 0.4);
+        }
+
+        .tech-stack {
+            padding: 40px 0;
+        }
+
+        .tech-stack h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 40px;
+            color: #f1f5f9;
+        }
+
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .tech-tag {
+            padding: 8px 20px;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 20px;
+            color: #10B981;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+            }
+
+            .feature-card {
+                padding: 24px;
+            }
+
+            .stat-number {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <div class="logo-icon">📚</div>
+            </div>
+            <h1>KnowledgeFlow</h1>
+            <p class="subtitle">AI智能体驱动的学习平台，让知识轻松流入你的脑海</p>
+        </header>
+
+        <section class="stats">
+            <div class="stat-card">
+                <div class="stat-number">10K+</div>
+                <div class="stat-label">活跃学习者</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">100+</div>
+                <div class="stat-label">学习领域</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">98%</div>
+                <div class="stat-label">用户满意度</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">24/7</div>
+                <div class="stat-label">AI学习助手</div>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <h3>智能学习计划</h3>
+                <p>根据你的学习目标和当前水平，智能生成个性化学习路径，追踪学习进度，让每一步都有方向。</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💡</div>
+                <h3>AI知识点讲解</h3>
+                <p>从零开始，循序渐进。AI会先补充前置概念，再深入讲解，确保你真正理解每一个知识点。</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📝</div>
+                <h3>智能练习测试</h3>
+                <p>题目练习、即时反馈、错题分析。AI会根据你的薄弱点推荐针对性练习，帮助你巩固所学。</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📁</div>
+                <h3>资料可读化转换</h3>
+                <p>支持PDF、图片、视频等多种格式，自动OCR识别和翻译，让学习资料更易获取。</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>学习统计分析</h3>
+                <p>学习时长、知识点掌握度、成就徽章，全面了解你的学习情况，激发学习动力。</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔗</div>
+                <h3>知识图谱关联</h3>
+                <p>可视化展示知识点之间的联系，智能推荐学习顺序，构建完整知识体系。</p>
+            </div>
+        </section>
+
+        <section class="workflow">
+            <h2>学习流程</h2>
+            <div class="workflow-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-title">设定目标</div>
+                    <div class="step-desc">选择学习领域，设定学习目标</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-title">规划路径</div>
+                    <div class="step-desc">AI生成个性化学习路线</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-title">开始学习</div>
+                    <div class="step-desc">AI讲解知识点，循序渐进</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-title">练习巩固</div>
+                    <div class="step-desc">完成练习，强化记忆</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">5</div>
+                    <div class="step-title">追踪进度</div>
+                    <div class="step-desc">查看统计，持续改进</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="target-users">
+            <h2>目标用户</h2>
+            <div class="user-grid">
+                <div class="user-card">
+                    <div class="user-icon">👨‍🎓</div>
+                    <h4>学生群体</h4>
+                    <p>从小学到大学，应对各种考试和学业挑战</p>
+                </div>
+                <div class="user-card">
+                    <div class="user-icon">👔</div>
+                    <h4>职场人士</h4>
+                    <p>学习新技能，提升职业竞争力</p>
+                </div>
+                <div class="user-card">
+                    <div class="user-icon">📖</div>
+                    <h4>终身学习者</h4>
+                    <p>对知识有持续追求的探索者</p>
+                </div>
+                <div class="user-card">
+                    <div class="user-icon">👩‍🏫</div>
+                    <h4>教育工作者</h4>
+                    <p>辅助教学，提升教学效果</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="tech-stack">
+            <h2>技术栈</h2>
+            <div class="tech-tags">
+                <span class="tech-tag">React</span>
+                <span class="tech-tag">TypeScript</span>
+                <span class="tech-tag">TailwindCSS</span>
+                <span class="tech-tag">Node.js</span>
+                <span class="tech-tag">Express</span>
+                <span class="tech-tag">PostgreSQL</span>
+                <span class="tech-tag">OpenAI API</span>
+                <span class="tech-tag">Supabase</span>
+            </div>
+        </section>
+
+        <section class="cta">
+            <h2>开启你的学习之旅</h2>
+            <p>加入 KnowledgeFlow，让AI成为你的专属学习助手，开启高效学习新体验</p>
+            <button class="btn">立即开始学习</button>
+        </section>
+
+        <footer>
+            <p>KnowledgeFlow - 让知识轻松流入你的脑海</p>
+        </footer>
+    </div>
+</body>
+</html>
