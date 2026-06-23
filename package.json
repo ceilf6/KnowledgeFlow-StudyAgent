@@ -7,7 +7,20 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "prepare": "npm run hooks:install",
+    "hooks:install": "node scripts/workflows/install-hooks.mjs",
+    "agent:bootstrap": "node scripts/workflows/contract-check.mjs bootstrap",
+    "contract:local": "node scripts/workflows/contract-check.mjs local",
+    "contract:check": "node scripts/workflows/contract-check.mjs check",
+    "contract:gitnexus": "node scripts/workflows/contract-check.mjs gitnexus",
+    "quality:predev": "npm run hooks:install && npm run contract:local",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:workflows": "node --test scripts/tests/*.test.mjs",
+    "quality:precommit": "npm run lint && npm run build && npm run test && npm run test:workflows",
+    "quality:ci": "npm run lint && npm run build && npm run test && npm run test:workflows",
+    "quality:local": "npm run contract:local && npm run quality:ci"
   },
   "dependencies": {
     "react": "^18.3.1",
@@ -16,13 +29,19 @@
     "zustand": "^4.5.4"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",
     "autoprefixer": "^10.4.19",
+    "eslint": "^10.5.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.7.0",
     "postcss": "^8.4.39",
     "tailwindcss": "^3.4.6",
     "typescript": "^5.5.3",
-    "vite": "^5.3.4"
+    "typescript-eslint": "^8.62.0",
+    "vite": "^5.3.4",
+    "vitest": "^4.1.9"
   }
 }
