@@ -36,6 +36,8 @@ Maintainers should clarify scope, affected area, expected behavior, and verifica
 
 ## Agent Rules
 
+**Canonical source:** `AGENTS.md` is the canonical source for the Harness Loop, hard prohibitions, completion criteria, and Agent Authority. This section summarizes agent duties but MUST NOT weaken anything in `AGENTS.md`. If any conflict exists, `AGENTS.md` wins. All hard prohibitions (NEVER commit to `main`, NEVER push without Issue+branch, NEVER skip Repo Guard CR, NEVER announce done while CR is pending) apply in full to agents following this file.
+
 Agents working in this repository should:
 
 1. Read `CONTRIBUTING.md`, this file, and `docs/knowledge-contract.md` before larger edits.
@@ -44,6 +46,7 @@ Agents working in this repository should:
 4. Ask maintainers when docs conflict or the expected behavior is unclear.
 5. Keep changes scoped to the requested work and existing architecture.
 6. Run focused tests first, then broader gates as risk increases.
+7. **For non-trivial changes, follow the full Harness Loop in `AGENTS.md`** — Issue → branch → predev → implement → PR → wait for CI + Contract Guard + Repo Guard CR → address findings until `reviewDecision` is `APPROVED` → only then announce completion.
 
 ## Agent Authority (Autonomous Mode)
 

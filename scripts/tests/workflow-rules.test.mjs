@@ -225,6 +225,22 @@ test('AGENTS.md removes when-feasible escape hatch for pre-flight gates', () => 
   assert.ok(!/before code changes when feasible/.test(content), 'AGENTS.md still contains the old "when feasible" escape hatch');
 });
 
+test('CLAUDE.md declares AGENTS.md as canonical Harness Loop source', () => {
+  const content = readRootFile('CLAUDE.md');
+  assert.ok(content.includes('Canonical source'), 'CLAUDE.md must declare a canonical source');
+  assert.ok(content.includes('`AGENTS.md` is the canonical source'), 'CLAUDE.md must name AGENTS.md as canonical');
+  assert.ok(content.includes('NEVER commit to `main`'), 'CLAUDE.md must restate the hard prohibitions or delegate to AGENTS.md');
+  assert.ok(content.includes('NEVER skip Repo Guard CR'), 'CLAUDE.md must restate the Repo Guard CR prohibition');
+});
+
+test('docs/workflow.md delegates to AGENTS.md for full Harness Loop', () => {
+  const content = readRootFile('docs/workflow.md');
+  assert.ok(content.includes('Canonical source'), 'docs/workflow.md must declare a canonical source');
+  assert.ok(content.includes('`AGENTS.md` is the canonical source'), 'docs/workflow.md must name AGENTS.md as canonical');
+  assert.ok(content.includes('follow the full Harness Loop in `AGENTS.md`'), 'docs/workflow.md must point agents to the full Harness Loop in AGENTS.md');
+  assert.ok(content.includes('NEVER announce done while CR is pending'), 'docs/workflow.md must restate the CR-pending prohibition');
+});
+
 test('AGENTS.md links SDD to Harness Loop', () => {
   const content = readRootFile('AGENTS.md');
   assert.ok(content.includes('SDD ⟶ Harness Loop linkage'), 'AGENTS.md missing SDD to Harness Loop linkage clause');

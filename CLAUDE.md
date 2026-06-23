@@ -2,6 +2,8 @@
 
 本文件用于指导开发者开发 KnowledgeFlow 学习智能体平台本身。学习智能体的行为提示词已收纳至 `docs/agent-prompts/`。
 
+> **Canonical source:** `AGENTS.md` is the canonical source for the Harness Loop, hard prohibitions, completion criteria, and Agent Authority rules. This file mirrors those rules for convenience but MUST NOT weaken them. If any conflict exists, `AGENTS.md` wins. All hard prohibitions (NEVER commit to `main`, NEVER push without Issue+branch, NEVER skip Repo Guard CR, NEVER announce done while CR is pending) apply in full here.
+
 ## Documents
 
 1. `README.md` is the public product overview.
