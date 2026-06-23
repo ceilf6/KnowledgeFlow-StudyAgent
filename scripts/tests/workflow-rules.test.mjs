@@ -192,6 +192,22 @@ test('AGENTS.md documents Agent Authority autonomous mode', () => {
   assert.ok(content.includes('Direct merge'), 'AGENTS.md missing direct merge rule');
 });
 
+test('AGENTS.md enforces mandatory Harness Loop with hard prohibitions', () => {
+  const content = readRootFile('AGENTS.md');
+  assert.ok(content.includes('MANDATORY'), 'AGENTS.md missing MANDATORY language in Harness Loop');
+  assert.ok(content.includes('NEVER commit directly to `main`'), 'AGENTS.md missing hard prohibition on direct main commits');
+  assert.ok(content.includes('NEVER push code without an open Issue'), 'AGENTS.md missing hard prohibition on pushing without Issue');
+  assert.ok(content.includes('NEVER skip Repo Guard CR'), 'AGENTS.md missing hard prohibition on skipping Repo Guard CR');
+  assert.ok(content.includes('Pre-flight checklist'), 'AGENTS.md missing Pre-flight checklist');
+  assert.ok(content.includes('git branch --show-current'), 'AGENTS.md missing branch verification step');
+});
+
+test('AGENTS.md links SDD to Harness Loop', () => {
+  const content = readRootFile('AGENTS.md');
+  assert.ok(content.includes('SDD ⟶ Harness Loop linkage'), 'AGENTS.md missing SDD to Harness Loop linkage clause');
+  assert.ok(content.includes('entry condition'), 'AGENTS.md missing entry condition language for SDD');
+});
+
 test('CLAUDE.md documents Agent Authority autonomous mode', () => {
   const content = readRootFile('CLAUDE.md');
   assert.ok(content.includes('## Agent Authority'), 'CLAUDE.md missing Agent Authority section');
