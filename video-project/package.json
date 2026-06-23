@@ -1,0 +1,16 @@
+{
+  "name": "knowledgeflow-douyin-video",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "capture": "tsx scripts/capture-screens.ts",
+    "tts": "tsx scripts/generate-tts.ts",
+    "preview": "npx hyperframes preview",
+    "render": "npx hyperframes render"
+  },
+  "dependencies": {
+    "puppeteer-core": "^23.0.0",
+    "tsx": "^4.0.0",
+    "dotenv": "^16.0.0"
+  }
+}

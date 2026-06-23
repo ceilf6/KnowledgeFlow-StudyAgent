@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KnowledgeFlow 抖音宣传视频</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+  <style>
+    :root {
+      --dark-bg: #0a0e27;
+      --dark-bg2: #1a1a2e;
+      --stress-red: #ef4444;
+      --brand-blue: #3b82f6;
+      --brand-blue-dark: #1e40af;
+      --accent-yellow: #fbbf24;
+      --text-white: #ffffff;
+      --text-dim: rgba(255,255,255,0.7);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #000;
+      font-family: 'Noto Sans SC', 'noto-sans-jp', sans-serif;
+    }
+
+    #stage {
+      width: 1080px;
+      height: 1920px;
+      position: relative;
+      overflow: hidden;
+      background: var(--dark-bg);
+    }
+
+    .scene {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      overflow: hidden;
+    }
+
+    /* === Animated Backgrounds === */
+    .bg-stress {
+      background: radial-gradient(ellipse at center, #1a1a3e 0%, #0a0e27 60%, #050810 100%);
+    }
+    .bg-stress::before {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 1200px; height: 1200px;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(circle, rgba(239,68,68,0.15) 0%, transparent 60%);
+      border-radius: 50%;
+      animation: stressPulse 2s ease-in-out infinite;
+    }
+    @keyframes stressPulse {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
+      50% { transform: translate(-50%, -50%) scale(1.15); opacity: 1; }
+    }
+
+    .bg-pain {
+      background: linear-gradient(135deg, #1a0a1e 0%, #0a0e27 50%, #1a0a0a 100%);
+    }
+    .bg-pain::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image:
+        repeating-linear-gradient(45deg, transparent, transparent 80px, rgba(239,68,68,0.03) 80px, rgba(239,68,68,0.03) 82px),
+        repeating-linear-gradient(-45deg, transparent, transparent 80px, rgba(239,68,68,0.03) 80px, rgba(239,68,68,0.03) 82px);
+    }
+
+    .bg-brand {
+      background: radial-gradient(ellipse at center, #1e40af 0%, #0f172a 70%, #0a0e27 100%);
+    }
+    .bg-brand::before {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 100px; height: 100px;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(circle, rgba(59,130,246,0.4) 0%, transparent 70%);
+      border-radius: 50%;
+      animation: brandGlow 3s ease-out infinite;
+    }
+    @keyframes brandGlow {
+      0% { width: 100px; height: 100px; opacity: 1; }
+      100% { width: 1600px; height: 1600px; opacity: 0; }
+    }
+
+    .bg-feature {
+      background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+    }
+    .bg-feature::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image:
+        linear-gradient(rgba(59,130,246,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(59,130,246,0.05) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    .bg-cta {
+      background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #1e40af 100%);
+    }
+    .bg-cta::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: radial-gradient(ellipse at 30% 40%, rgba(251,191,36,0.15) 0%, transparent 50%),
+                  radial-gradient(ellipse at 70% 60%, rgba(255,255,255,0.1) 0%, transparent 50%);
+    }
+
+    /* === Floating Particles === */
+    .particles {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .particle {
+      position: absolute;
+      width: 6px; height: 6px;
+      background: rgba(255,255,255,0.4);
+      border-radius: 50%;
+    }
+    .particle-red {
+      background: rgba(239,68,68,0.5);
+    }
+    .particle-blue {
+      background: rgba(59,130,246,0.5);
+    }
+    .particle-yellow {
+      background: rgba(251,191,36,0.6);
+    }
+
+    /* === Text Styles === */
+    .caption-main {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 320px;
+      width: 90%;
+      text-align: center;
+      color: var(--text-white);
+      font-size: 72px;
+      font-weight: 900;
+      text-shadow: 0 4px 20px rgba(0,0,0,0.8), 0 0 40px rgba(0,0,0,0.5);
+      line-height: 1.35;
+      z-index: 10;
+    }
+    .caption-main .highlight-red {
+      color: var(--stress-red);
+      text-shadow: 0 4px 20px rgba(239,68,68,0.6), 0 0 40px rgba(239,68,68,0.3);
+    }
+    .caption-main .highlight-yellow {
+      color: var(--accent-yellow);
+      text-shadow: 0 4px 20px rgba(251,191,36,0.6), 0 0 40px rgba(251,191,36,0.3);
+    }
+    .caption-main .highlight-blue {
+      color: var(--brand-blue);
+      text-shadow: 0 4px 20px rgba(59,130,246,0.6);
+    }
+
+    /* === Product Screenshot === */
+    .screenshot-wrapper {
+      position: absolute;
+      top: 35%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 940px;
+      z-index: 5;
+    }
+    .screenshot-frame {
+      position: relative;
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow:
+        0 0 0 2px rgba(59,130,246,0.3),
+        0 0 60px rgba(59,130,246,0.2),
+        0 20px 80px rgba(0,0,0,0.6);
+    }
+    .screenshot-frame img {
+      width: 100%;
+      display: block;
+      border-radius: 28px;
+    }
+    .screenshot-glow {
+      position: absolute;
+      top: -2px; left: -2px; right: -2px; bottom: -2px;
+      border-radius: 30px;
+      background: linear-gradient(135deg, rgba(59,130,246,0.4), rgba(251,191,36,0.4), rgba(59,130,246,0.4));
+      z-index: -1;
+      animation: frameGlow 3s linear infinite;
+      background-size: 200% 200%;
+    }
+    @keyframes frameGlow {
+      0% { background-position: 0% 0%; }
+      100% { background-position: 200% 200%; }
+    }
+
+    /* === Feature Badge === */
+    .feature-badge {
+      position: absolute;
+      top: 120px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      z-index: 10;
+    }
+    .feature-number {
+      width: 80px; height: 80px;
+      background: var(--accent-yellow);
+      color: var(--dark-bg);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+      font-weight: 900;
+      box-shadow: 0 0 30px rgba(251,191,36,0.5);
+    }
+    .feature-title {
+      color: var(--text-white);
+      font-size: 48px;
+      font-weight: 700;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    }
+
+    /* === Logo Text === */
+    .logo-display {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      width: 90%;
+      z-index: 10;
+    }
+    .logo-name {
+      color: var(--text-white);
+      font-size: 96px;
+      font-weight: 900;
+      letter-spacing: -2px;
+      text-shadow: 0 0 60px rgba(59,130,246,0.8), 0 0 100px rgba(59,130,246,0.4);
+    }
+    .logo-tagline {
+      font-size: 48px;
+      font-weight: 700;
+      margin-top: 40px;
+      color: var(--accent-yellow);
+      text-shadow: 0 0 30px rgba(251,191,36,0.5);
+    }
+    .logo-url {
+      font-size: 28px;
+      font-weight: 400;
+      margin-top: 32px;
+      color: var(--text-dim);
+      word-break: break-all;
+    }
+
+    /* === CTA Hashtag === */
+    .hashtag-block {
+      position: absolute;
+      bottom: 180px;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 32px;
+      font-weight: 600;
+      z-index: 10;
+    }
+
+    /* === Visual Metaphors === */
+    .question-mark {
+      position: absolute;
+      color: rgba(239,68,68,0.08);
+      font-size: 280px;
+      font-weight: 900;
+      pointer-events: none;
+    }
+    .book-stack {
+      position: absolute;
+      top: 25%;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column-reverse;
+      gap: 8px;
+      opacity: 0.15;
+    }
+    .book {
+      width: 400px;
+      height: 50px;
+      background: rgba(239,68,68,0.3);
+      border-radius: 4px;
+      border-left: 8px solid rgba(239,68,68,0.5);
+    }
+    .book:nth-child(2) { width: 380px; }
+    .book:nth-child(3) { width: 420px; }
+    .book:nth-child(4) { width: 360px; }
+
+    .light-burst {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 0; height: 0;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(59,130,246,0.6) 0%, rgba(59,130,246,0.2) 30%, transparent 70%);
+    }
+  </style>
+</head>
+<body>
+  <div id="stage" data-composition-id="kf-promo" data-start="0" data-width="1080" data-height="1920">
+
+    <!-- Scene 1: Hook (0-3.5s) - Stress & Anxiety -->
+    <div class="scene bg-stress clip" id="scene-hook" data-start="0" data-duration="3.5" data-track-index="0">
+      <!-- Floating question marks -->
+      <div class="question-mark" style="top: 100px; left: 80px;">?</div>
+      <div class="question-mark" style="top: 400px; right: 60px; font-size: 200px;">?</div>
+      <div class="question-mark" style="bottom: 300px; left: 200px; font-size: 160px;">?</div>
+
+      <!-- Stress particles -->
+      <div class="particles" id="hook-particles">
+        <div class="particle particle-red" style="top: 20%; left: 15%;"></div>
+        <div class="particle particle-red" style="top: 35%; left: 80%;"></div>
+        <div class="particle particle-red" style="top: 60%; left: 25%;"></div>
+        <div class="particle particle-red" style="top: 75%; left: 70%;"></div>
+        <div class="particle" style="top: 15%; left: 50%;"></div>
+        <div class="particle" style="top: 50%; left: 90%;"></div>
+        <div class="particle" style="top: 85%; left: 40%;"></div>
+      </div>
+
+      <div class="caption-main" id="hook-text">
+        期末复习<br/>
+        看了一晚上<br/>
+        <span class="highlight-red">还是啥也不会？</span>
+      </div>
+    </div>
+
+    <!-- Scene 2: Pain Point (3.5-7.8s) - Frustration -->
+    <div class="scene bg-pain clip" id="scene-pain" data-start="3.5" data-duration="4.3" data-track-index="0">
+      <!-- Book stack metaphor -->
+      <div class="book-stack" id="pain-books">
+        <div class="book"></div>
+        <div class="book"></div>
+        <div class="book"></div>
+        <div class="book"></div>
+      </div>
+
+      <!-- Stress particles -->
+      <div class="particles">
+        <div class="particle particle-red" style="top: 25%; left: 20%;"></div>
+        <div class="particle particle-red" style="top: 55%; left: 75%;"></div>
+        <div class="particle particle-red" style="top: 80%; left: 30%;"></div>
+      </div>
+
+      <div class="caption-main" id="pain-text">
+        教科书这么厚<br/>
+        知识点<span class="highlight-red">跳着讲</span><br/>
+        复习<span class="highlight-red">完全没有计划！</span>
+      </div>
+    </div>
+
+    <!-- Scene 3: Brand Reveal (7.8-11.8s) - Solution -->
+    <div class="scene bg-brand clip" id="scene-brand" data-start="7.8" data-duration="4" data-track-index="0">
+      <!-- Light burst -->
+      <div class="light-burst" id="light-burst"></div>
+
+      <!-- Upward particles -->
+      <div class="particles" id="brand-particles">
+        <div class="particle particle-blue" style="bottom: 10%; left: 20%;"></div>
+        <div class="particle particle-blue" style="bottom: 15%; left: 50%;"></div>
+        <div class="particle particle-blue" style="bottom: 8%; left: 75%;"></div>
+        <div class="particle particle-yellow" style="bottom: 20%; left: 35%;"></div>
+        <div class="particle particle-yellow" style="bottom: 12%; left: 65%;"></div>
+      </div>
+
+      <div class="logo-display" id="brand-logo">
+        <div class="logo-name">KnowledgeFlow</div>
+        <div class="logo-tagline">AI 帮你，从零搞定期末！</div>
+      </div>
+    </div>
+
+    <!-- Scene 4: Feature 1 - Learning Plan (11.8-16.9s) -->
+    <div class="scene bg-feature clip" id="scene-plan" data-start="11.8" data-duration="5.1" data-track-index="0">
+      <div class="feature-badge" id="plan-badge">
+        <div class="feature-number">01</div>
+        <div class="feature-title">智能学习计划</div>
+      </div>
+
+      <div class="screenshot-wrapper" id="plan-screenshot">
+        <div class="screenshot-frame">
+          <div class="screenshot-glow"></div>
+          <img src="assets/screenshots/plans.png" alt="学习计划" />
+        </div>
+      </div>
+
+      <div class="caption-main" id="plan-caption">
+        输入考试科目<br/>
+        <span class="highlight-yellow">AI 自动生成复习路线</span>
+      </div>
+    </div>
+
+    <!-- Scene 5: Feature 2 - AI Explanation (16.9-21.3s) -->
+    <div class="scene bg-feature clip" id="scene-study" data-start="16.9" data-duration="4.4" data-track-index="0">
+      <div class="feature-badge" id="study-badge">
+        <div class="feature-number">02</div>
+        <div class="feature-title">AI 知识点讲解</div>
+      </div>
+
+      <div class="screenshot-wrapper" id="study-screenshot">
+        <div class="screenshot-frame">
+          <div class="screenshot-glow"></div>
+          <img src="assets/screenshots/study.png" alt="AI 讲解" />
+        </div>
+      </div>
+
+      <div class="caption-main" id="study-caption">
+        从前置概念开始<br/>
+        <span class="highlight-yellow">绝不跳步！</span>
+      </div>
+    </div>
+
+    <!-- Scene 6: Feature 3 - Practice (21.3-25.1s) -->
+    <div class="scene bg-feature clip" id="scene-practice" data-start="21.3" data-duration="3.8" data-track-index="0">
+      <div class="feature-badge" id="practice-badge">
+        <div class="feature-number">03</div>
+        <div class="feature-title">智能练习</div>
+      </div>
+
+      <div class="screenshot-wrapper" id="practice-screenshot">
+        <div class="screenshot-frame">
+          <div class="screenshot-glow"></div>
+          <img src="assets/screenshots/practice.png" alt="智能练习" />
+        </div>
+      </div>
+
+      <div class="caption-main" id="practice-caption">
+        即时反馈<br/>
+        <span class="highlight-yellow">错题深度分析</span>
+      </div>
+    </div>
+
+    <!-- Scene 7: Feature 4 - Stats (25.1-28.5s) -->
+    <div class="scene bg-feature clip" id="scene-stats" data-start="25.1" data-duration="3.4" data-track-index="0">
+      <div class="feature-badge" id="stats-badge">
+        <div class="feature-number">04</div>
+        <div class="feature-title">学习统计</div>
+      </div>
+
+      <div class="screenshot-wrapper" id="stats-screenshot">
+        <div class="screenshot-frame">
+          <div class="screenshot-glow"></div>
+          <img src="assets/screenshots/home.png" alt="学习统计" />
+        </div>
+      </div>
+
+      <div class="caption-main" id="stats-caption">
+        进度可视<br/>
+        <span class="highlight-yellow">成就解锁！</span>
+      </div>
+    </div>
+
+    <!-- Scene 8: CTA (28.5-32s) -->
+    <div class="scene bg-cta clip" id="scene-cta" data-start="28.5" data-duration="3.5" data-track-index="0">
+      <!-- Floating particles -->
+      <div class="particles">
+        <div class="particle particle-yellow" style="top: 20%; left: 15%;"></div>
+        <div class="particle particle-yellow" style="top: 35%; left: 80%;"></div>
+        <div class="particle" style="top: 50%; left: 25%;"></div>
+        <div class="particle particle-yellow" style="top: 65%; left: 70%;"></div>
+        <div class="particle" style="top: 80%; left: 40%;"></div>
+      </div>
+
+      <div class="logo-display" id="cta-logo">
+        <div class="logo-name" style="font-size: 72px;">让知识<br/>轻松流入你的脑海</div>
+        <div class="logo-url">ceilf6.github.io/KnowledgeFlow-StudyAgent</div>
+      </div>
+
+      <div class="hashtag-block" id="cta-hashtag">
+        #vibecoding大赏 #traeai创造力大赛<br/>
+        @TRAE @抖音科技
+      </div>
+    </div>
+
+    <!-- Audio Tracks -->
+    <audio id="narration-audio" class="clip" data-start="0" data-duration="32" data-track-index="1" data-volume="1.0" src="assets/audio/narration.mp3"></audio>
+    <audio id="music-audio" class="clip" data-start="0" data-duration="32" data-track-index="2" data-volume="0.15" src="assets/audio/music.mp3"></audio>
+
+  </div>
+
+  <script>
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+
+    // === Scene 1: Hook (0-3.5s) - Stress & Anxiety ===
+    tl.fromTo('#scene-hook', { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0)
+      .fromTo('#hook-text', { y: 100, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' }, 0.2)
+      .fromTo('.question-mark', { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.6, stagger: 0.15 }, 0.3)
+      .fromTo('.particle', { opacity: 0 }, { opacity: 1, duration: 0.5, stagger: 0.08 }, 0.5)
+      // Shake effect on the key phrase
+      .fromTo('#hook-text .highlight-red', { x: 0 }, { x: -8, duration: 0.05 }, 2.0)
+      .to('#hook-text .highlight-red', { x: 8, duration: 0.05 }, 2.05)
+      .to('#hook-text .highlight-red', { x: -6, duration: 0.05 }, 2.10)
+      .to('#hook-text .highlight-red', { x: 6, duration: 0.05 }, 2.15)
+      .to('#hook-text .highlight-red', { x: -4, duration: 0.05 }, 2.20)
+      .to('#hook-text .highlight-red', { x: 0, duration: 0.05 }, 2.25)
+      // Scale pulse on key phrase
+      .fromTo('#hook-text .highlight-red', { scale: 1 }, { scale: 1.1, duration: 0.3, yoyo: true, repeat: 1, ease: 'power2.inOut' }, 2.5)
+      .to('#scene-hook', { opacity: 0, duration: 0.3 }, 3.2);
+
+    // === Scene 2: Pain Point (3.5-7.8s) - Frustration ===
+    tl.fromTo('#scene-pain', { opacity: 0 }, { opacity: 1, duration: 0.3 }, 3.5)
+      .fromTo('.book', { scaleY: 0, opacity: 0 }, { scaleY: 1, opacity: 0.15, duration: 0.4, stagger: 0.1, ease: 'power2.out' }, 3.7)
+      .fromTo('#pain-text', { y: 80, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: 'power3.out' }, 4.0)
+      .fromTo('#pain-text .highlight-red', { scale: 1 }, { scale: 1.12, duration: 0.3, yoyo: true, repeat: 1 }, 5.5)
+      .fromTo('#pain-text .highlight-red:nth-of-type(2)', { scale: 1 }, { scale: 1.12, duration: 0.3, yoyo: true, repeat: 1 }, 6.5)
+      .to('#scene-pain', { opacity: 0, duration: 0.3 }, 7.5);
+
+    // === Scene 3: Brand Reveal (7.8-11.8s) - Solution ===
+    tl.fromTo('#scene-brand', { opacity: 0 }, { opacity: 1, duration: 0.4 }, 7.8)
+      // Light burst expansion
+      .fromTo('#light-burst', { width: 0, height: 0, opacity: 1 }, { width: 1600, height: 1600, opacity: 0, duration: 1.5, ease: 'power2.out' }, 7.9)
+      // Logo dramatic reveal
+      .fromTo('#brand-logo .logo-name', { scale: 0.3, opacity: 0, rotation: -5 }, { scale: 1, opacity: 1, rotation: 0, duration: 1.0, ease: 'back.out(1.7)' }, 8.2)
+      .fromTo('#brand-logo .logo-tagline', { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: 'power2.out' }, 9.3)
+      // Particle upward motion
+      .fromTo('#brand-particles .particle', { y: 0, opacity: 0 }, { y: -200, opacity: 1, duration: 2.0, stagger: 0.1, ease: 'none' }, 8.0)
+      .to('#scene-brand', { opacity: 0, duration: 0.4 }, 11.4);
+
+    // === Scene 4: Feature 1 - Learning Plan (11.8-16.9s) ===
+    tl.fromTo('#scene-plan', { opacity: 0 }, { opacity: 1, duration: 0.3 }, 11.8)
+      .fromTo('#plan-badge', { y: -60, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: 'back.out(1.5)' }, 11.9)
+      .fromTo('#plan-badge .feature-number', { scale: 0 }, { scale: 1, duration: 0.4, ease: 'back.out(2)' }, 12.1)
+      .fromTo('#plan-screenshot', { scale: 0.8, opacity: 0, y: 60 }, { scale: 1, opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, 12.3)
+      .fromTo('#plan-caption', { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5 }, 13.5)
+      .fromTo('#plan-caption .highlight-yellow', { scale: 1 }, { scale: 1.1, duration: 0.3, yoyo: true, repeat: 1 }, 15.0)
+      .to('#scene-plan', { opacity: 0, duration: 0.3 }, 16.6);
+
+    // === Scene 5: Feature 2 - AI Explanation (16.9-21.3s) ===
+    tl.fromTo('#scene-study', { opacity: 0 }, { opacity: 1, duration: 0.3 }, 16.9)
+      .fromTo('#study-badge', { y: -60, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: 'back.out(1.5)' }, 17.0)
+      .fromTo('#study-badge .feature-number', { scale: 0 }, { scale: 1, duration: 0.4, ease: 'back.out(2)' }, 17.2)
+      .fromTo('#study-screenshot', { scale: 0.8, opacity: 0, y: 60 }, { scale: 1, opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, 17.4)
+      .fromTo('#study-caption', { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5 }, 18.6)
+      .fromTo('#study-caption .highlight-yellow', { scale: 1 }, { scale: 1.1, duration: 0.3, yoyo: true, repeat: 1 }, 19.8)
+      .to('#scene-study', { opacity: 0, duration: 0.3 }, 21.0);
+
+    // === Scene 6: Feature 3 - Practice (21.3-25.1s) ===
+    tl.fromTo('#scene-practice', { opacity: 0 }, { opacity: 1, duration: 0.3 }, 21.3)
+      .fromTo('#practice-badge', { y: -60, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: 'back.out(1.5)' }, 21.4)
+      .fromTo('#practice-badge .feature-number', { scale: 0 }, { scale: 1, duration: 0.4, ease: 'back.out(2)' }, 21.6)
+      .fromTo('#practice-screenshot', { scale: 0.8, opacity: 0, y: 60 }, { scale: 1, opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, 21.8)
+      .fromTo('#practice-caption', { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5 }, 23.0)
+      .fromTo('#practice-caption .highlight-yellow', { scale: 1 }, { scale: 1.1, duration: 0.3, yoyo: true, repeat: 1 }, 24.0)
+      .to('#scene-practice', { opacity: 0, duration: 0.3 }, 24.8);
+
+    // === Scene 7: Feature 4 - Stats (25.1-28.5s) ===
+    tl.fromTo('#scene-stats', { opacity: 0 }, { opacity: 1, duration: 0.3 }, 25.1)
+      .fromTo('#stats-badge', { y: -60, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: 'back.out(1.5)' }, 25.2)
+      .fromTo('#stats-badge .feature-number', { scale: 0 }, { scale: 1, duration: 0.4, ease: 'back.out(2)' }, 25.4)
+      .fromTo('#stats-screenshot', { scale: 0.8, opacity: 0, y: 60 }, { scale: 1, opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, 25.6)
+      .fromTo('#stats-caption', { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5 }, 26.8)
+      .fromTo('#stats-caption .highlight-yellow', { scale: 1 }, { scale: 1.1, duration: 0.3, yoyo: true, repeat: 1 }, 27.6)
+      .to('#scene-stats', { opacity: 0, duration: 0.3 }, 28.2);
+
+    // === Scene 8: CTA (28.5-32s) ===
+    tl.fromTo('#scene-cta', { opacity: 0 }, { opacity: 1, duration: 0.5 }, 28.5)
+      .fromTo('#cta-logo .logo-name', { scale: 0.7, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.8, ease: 'back.out(1.7)' }, 28.7)
+      .fromTo('#cta-logo .logo-url', { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5 }, 29.7)
+      .fromTo('#cta-hashtag', { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5 }, 30.3)
+      // Gentle pulse on the logo
+      .fromTo('#cta-logo .logo-name', { scale: 1 }, { scale: 1.03, duration: 1.5, yoyo: true, repeat: 1, ease: 'sine.inOut' }, 30.0);
+
+    window.__timelines['kf-promo'] = tl;
+  </script>
+</body>
+</html>
