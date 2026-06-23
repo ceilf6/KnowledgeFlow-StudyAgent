@@ -211,11 +211,12 @@ test('AGENTS.md enforces waiting for Repo Guard CR before claiming done', () => 
   assert.ok(!content.includes('The Issue MUST reference the spec/plan'), 'AGENTS.md still has circular dependency between Issue and spec/plan');
 });
 
-test('AGENTS.md requires APPROVED reviewDecision, not just absence of CHANGES_REQUESTED', () => {
+test('AGENTS.md documents GitHub Actions approval limitation and comment-based approval', () => {
   const content = readRootFile('AGENTS.md');
-  assert.ok(content.includes('`APPROVED`'), 'AGENTS.md missing APPROVED requirement in Completion criteria');
-  assert.ok(content.includes('REVIEW_REQUIRED'), 'AGENTS.md must explicitly reject REVIEW_REQUIRED as a done state');
-  assert.ok(content.includes('maintainer override'), 'AGENTS.md missing maintainer override as the only alternative to APPROVED');
+  assert.ok(content.includes('GitHub Actions cannot post formal `APPROVED` review events'), 'AGENTS.md must document the GitHub Actions approval limitation');
+  assert.ok(content.includes('处理建议: 批准'), 'AGENTS.md must reference the comment-based approval format');
+  assert.ok(content.includes('Do NOT rely on `reviewDecision` alone'), 'AGENTS.md must warn against relying on reviewDecision alone');
+  assert.ok(content.includes('current head commit'), 'AGENTS.md must require checking the latest output on the current head commit');
 });
 
 test('AGENTS.md removes when-feasible escape hatch for pre-flight gates', () => {
