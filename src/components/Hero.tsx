@@ -31,7 +31,7 @@ export default function Hero({ onStart, onLearnMore }: { onStart?: () => void; o
           style={{
             inset: '40px',
             animation: 'ringRotate 25s linear infinite reverse',
-            borderColor: 'var(--teal-border)',
+            borderColor: 'var(--teal-ring-soft)',
           }}
         >
           <div className="hero-ring-dot" />
@@ -45,7 +45,7 @@ export default function Hero({ onStart, onLearnMore }: { onStart?: () => void; o
           style={{
             inset: '120px',
             animation: 'ringRotate 35s linear infinite reverse',
-            borderColor: 'var(--teal-border)',
+            borderColor: 'var(--teal-ring-faint)',
           }}
         />
       </div>

@@ -32,6 +32,8 @@
   --gold-glow-strong: rgba(212, 168, 83, 0.1);
   --teal-glow: rgba(45, 212, 191, 0.12);
   --teal-border: rgba(45, 212, 191, 0.25);
+  --teal-ring-soft: rgba(45, 212, 191, 0.1);
+  --teal-ring-faint: rgba(45, 212, 191, 0.08);
   --warn-color: #f59e0b;
   --warn-border: rgba(245, 158, 11, 0.2);
   --error-color: #f87171;
@@ -67,6 +69,8 @@
   --gold-glow-strong: rgba(138, 90, 31, 0.1);
   --teal-glow: rgba(13, 125, 114, 0.12);
   --teal-border: rgba(13, 125, 114, 0.3);
+  --teal-ring-soft: rgba(13, 125, 114, 0.1);
+  --teal-ring-faint: rgba(13, 125, 114, 0.08);
   --warn-color: #b45309;
   --warn-border: rgba(180, 83, 9, 0.25);
   --error-color: #b91c1c;
@@ -102,6 +106,8 @@
   --gold-glow-strong: rgba(168, 115, 40, 0.1);
   --teal-glow: rgba(13, 148, 136, 0.12);
   --teal-border: rgba(13, 148, 136, 0.3);
+  --teal-ring-soft: rgba(13, 148, 136, 0.1);
+  --teal-ring-faint: rgba(13, 148, 136, 0.08);
   --warn-color: #b45309;
   --warn-border: rgba(180, 83, 9, 0.25);
   --error-color: #b91c1c;
@@ -141,7 +147,7 @@
     content: '';
     position: fixed;
     inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     pointer-events: none;
     z-index: 9999;
     opacity: var(--grain-opacity);
