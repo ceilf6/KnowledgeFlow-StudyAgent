@@ -77,7 +77,7 @@ export default function ResourcesPage() {
         className="app-card"
         style={{
           marginBottom: '24px',
-          border: dragging ? '2px dashed #d4a853' : '2px dashed rgba(212, 168, 83, 0.2)',
+          border: dragging ? '2px dashed var(--gold-primary)' : '2px dashed var(--border-gold-strong)',
           textAlign: 'center',
           cursor: 'pointer',
           transition: 'all 0.3s ease',
@@ -95,10 +95,10 @@ export default function ResourcesPage() {
           onChange={(e) => handleFiles(e.target.files)}
         />
         <div style={{ fontSize: '3rem', marginBottom: '16px', opacity: 0.5 }}>📁</div>
-        <div style={{ color: '#f0ece4', fontSize: '1.1rem', fontWeight: 500, marginBottom: '8px' }}>
+        <div style={{ color: 'var(--text-primary)', fontSize: '1.1rem', fontWeight: 500, marginBottom: '8px' }}>
           点击或拖拽文件到此处上传
         </div>
-        <div style={{ color: '#9a958c', fontSize: '0.88rem' }}>
+        <div style={{ color: 'var(--text-secondary)', fontSize: '0.88rem' }}>
           支持：TXT / MD / JSON / CSV / 代码文件（直接读取）· PDF / 图片 / 视频（模拟可读化）
         </div>
       </div>
@@ -118,10 +118,10 @@ export default function ResourcesPage() {
             <div key={r.id} className="app-card" style={{ padding: '24px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px' }}>
                 <div>
-                  <div style={{ color: '#f0ece4', fontWeight: 600, fontSize: '1rem', marginBottom: '4px' }}>
+                  <div style={{ color: 'var(--text-primary)', fontWeight: 600, fontSize: '1rem', marginBottom: '4px' }}>
                     {r.name}
                   </div>
-                  <div style={{ fontSize: '0.82rem', color: '#5c584f' }}>
+                  <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>
                     {r.type} · {formatSize(r.size)} · {new Date(r.createdAt).toLocaleString('zh-CN')}
                   </div>
                 </div>
@@ -152,13 +152,13 @@ export default function ResourcesPage() {
               {r.content && r.status === 'readable' && (
                 <pre
                   style={{
-                    background: '#08080d',
-                    border: '1px solid rgba(212, 168, 83, 0.12)',
+                    background: 'var(--bg-code)',
+                    border: '1px solid var(--border-gold)',
                     borderRadius: '12px',
                     padding: '16px',
                     overflowX: 'auto',
                     fontSize: '0.85rem',
-                    color: '#c9c4ba',
+                    color: 'var(--text-body)',
                     lineHeight: 1.6,
                     maxHeight: '300px',
                     overflowY: 'auto',

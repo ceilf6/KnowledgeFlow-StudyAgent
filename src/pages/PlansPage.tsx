@@ -170,7 +170,7 @@ export default function PlansPage() {
 
       {/* 错误 */}
       {error && (
-        <div className="app-card" style={{ borderColor: 'rgba(239, 68, 68, 0.3)', color: '#f87171', marginBottom: '24px' }}>
+        <div className="app-card" style={{ borderColor: 'var(--error-border)', color: 'var(--error-color)', marginBottom: '24px' }}>
           {error}
         </div>
       )}
@@ -196,14 +196,14 @@ export default function PlansPage() {
                   justifyContent: 'space-between',
                   alignItems: 'center',
                   padding: '16px 20px',
-                  background: '#0a0a0f',
+                  background: 'var(--bg-input)',
                   borderRadius: '12px',
-                  border: '1px solid rgba(212, 168, 83, 0.1)',
+                  border: '1px solid var(--border-gold)',
                 }}
               >
                 <div>
-                  <div style={{ color: '#f0ece4', fontWeight: 500 }}>{node.topic}</div>
-                  <div style={{ fontSize: '0.8rem', color: '#5c584f', marginTop: '4px' }}>
+                  <div style={{ color: 'var(--text-primary)', fontWeight: 500 }}>{node.topic}</div>
+                  <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '4px' }}>
                     {new Date(node.learnedAt).toLocaleString('zh-CN')}
                   </div>
                 </div>

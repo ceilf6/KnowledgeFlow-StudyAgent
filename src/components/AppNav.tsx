@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router-dom'
 import { useSettingsStore } from '../store/settingsStore'
+import ThemeSwitcher from './ThemeSwitcher'
 
 const NAV_ITEMS = [
   { to: '/study', label: '智能学习' },
@@ -36,6 +37,9 @@ export default function AppNav() {
             <span className="badge badge-demo">演示模式</span>
           </li>
         )}
+        <li>
+          <ThemeSwitcher />
+        </li>
       </ul>
     </nav>
   )

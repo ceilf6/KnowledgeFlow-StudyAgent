@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import ThemeSwitcher from './ThemeSwitcher'
 
 export default function Nav() {
   return (
@@ -13,6 +14,7 @@ export default function Nav() {
         <li><Link className="nav-link" to="/practice">练习</Link></li>
         <li><Link className="nav-link" to="/resources">资源</Link></li>
         <li><Link className="nav-link" to="/settings">设置</Link></li>
+        <li><ThemeSwitcher /></li>
       </ul>
     </nav>
   )

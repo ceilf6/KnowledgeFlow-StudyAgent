@@ -64,7 +64,7 @@ export default function LandingPage() {
       <div
         className="ambient-orb fixed rounded-full pointer-events-none"
         style={{
-          width: '600px', height: '600px', background: '#d4a853',
+          width: '600px', height: '600px', background: 'var(--gold-primary)',
           top: '-200px', right: '-150px', filter: 'blur(120px)', opacity: '0.15',
           animation: 'orbFloat1 20s ease-in-out infinite', zIndex: 0,
         }}
@@ -72,7 +72,7 @@ export default function LandingPage() {
       <div
         className="ambient-orb fixed rounded-full pointer-events-none"
         style={{
-          width: '400px', height: '400px', background: '#2dd4bf',
+          width: '400px', height: '400px', background: 'var(--teal-accent)',
           bottom: '10%', left: '-100px', filter: 'blur(120px)', opacity: '0.15',
           animation: 'orbFloat2 25s ease-in-out infinite', zIndex: 0,
         }}
@@ -80,7 +80,7 @@ export default function LandingPage() {
       <div
         className="ambient-orb fixed rounded-full pointer-events-none"
         style={{
-          width: '300px', height: '300px', background: '#8a6d2b',
+          width: '300px', height: '300px', background: 'var(--gold-dim)',
           top: '50%', right: '20%', filter: 'blur(120px)', opacity: '0.15',
           animation: 'orbFloat3 18s ease-in-out infinite', zIndex: 0,
         }}
