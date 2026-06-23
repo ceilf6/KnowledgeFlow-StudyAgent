@@ -184,3 +184,24 @@ test('docs/workflow.md exists', () => {
 test('docs/knowledge-contract.md exists', () => {
   assert.ok(existsSync(resolve(root, 'docs/knowledge-contract.md')));
 });
+
+test('AGENTS.md documents Agent Authority autonomous mode', () => {
+  const content = readRootFile('AGENTS.md');
+  assert.ok(content.includes('## Agent Authority'), 'AGENTS.md missing Agent Authority section');
+  assert.ok(content.includes('Co-authored-by: traeagent <traeagent@users.noreply.github.com>'), 'AGENTS.md missing Co-authored-by trailer rule');
+  assert.ok(content.includes('Direct merge'), 'AGENTS.md missing direct merge rule');
+});
+
+test('CLAUDE.md documents Agent Authority autonomous mode', () => {
+  const content = readRootFile('CLAUDE.md');
+  assert.ok(content.includes('## Agent Authority'), 'CLAUDE.md missing Agent Authority section');
+  assert.ok(content.includes('Co-authored-by: traeagent <traeagent@users.noreply.github.com>'), 'CLAUDE.md missing Co-authored-by trailer rule');
+  assert.ok(content.includes('Direct merge'), 'CLAUDE.md missing direct merge rule');
+});
+
+test('docs/workflow.md documents Agent Authority and autonomous merge', () => {
+  const content = readRootFile('docs/workflow.md');
+  assert.ok(content.includes('## Agent Authority'), 'workflow.md missing Agent Authority section');
+  assert.ok(content.includes('autonomous mode'), 'workflow.md missing autonomous mode rule');
+  assert.ok(content.includes('agent merges directly'), 'workflow.md missing autonomous merge rule');
+});
