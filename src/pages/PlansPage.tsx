@@ -81,20 +81,21 @@ export default function PlansPage() {
         { role: 'system', content: PLAN_SYSTEM_PROMPT },
         { role: 'user', content: `请为以下学习目标生成知识路线：\n\n${goal}` },
       ]
-      let fullText = ''
+      // 用局部变量保存流式累计文本，abort 时直接保留，不回写旧 plan
+      let accText = ''
       await streamChat(
         messages,
         { apiKey, baseURL, model },
         (chunk) => {
-          fullText += chunk
-          setPlan(fullText)
+          accText += chunk
+          setPlan(accText)
         },
         abortRef.current.signal,
       )
     } catch (err) {
       if (err instanceof Error && err.name === 'AbortError') {
-        // 用户主动取消，保留已生成内容
-        if (plan) setPlan(plan)
+        // 用户主动取消，保留当前流式已生成内容（accText 已通过 setPlan 持续更新到 UI）
+        // 不需要额外操作，UI 已显示最新片段
       } else {
         setError(err instanceof Error ? err.message : '生成失败，请检查设置')
       }

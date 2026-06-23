@@ -38,23 +38,29 @@ function countdown(n) {
 
 /**
  * 从批改回复中解析得分
- * 支持格式："3/3"、"2/3 正确"、"得分：2"、"2 分" 等
- * 解析失败时返回 0
+ * 支持格式："3/3"、"2/3"、"得分：2"、"分数：2"、"评分：2"、"总分：2"、"2 分" 等
+ * 解析失败时返回 -1（调用方据此决定是否写入记录）
  */
 function parseScore(text: string, total: number): number {
-  // 尝试匹配 "X/total" 格式
-  const slashMatch = text.match(/(\d+)\s*\/\s*3/)
+  // 尝试匹配 "X/total" 格式（total 作为参数传入）
+  const slashMatch = text.match(new RegExp(`(\\d+)\\s*\\/\\s*${total}`))
   if (slashMatch) {
     const score = parseInt(slashMatch[1], 10)
     if (score >= 0 && score <= total) return score
   }
-  // 尝试匹配 "X 分" 或 "得分：X" 格式
-  const scoreMatch = text.match(/(?:得分|分数|评分)[：:]\s*(\d+)/)
+  // 尝试匹配 "得分|分数|评分|总分：X" 格式
+  const scoreMatch = text.match(/(?:得分|分数|评分|总分)[：:]\s*(\d+)/)
   if (scoreMatch) {
     const score = parseInt(scoreMatch[1], 10)
     if (score >= 0 && score <= total) return score
   }
-  return 0
+  // 尝试匹配 "X 分" 格式
+  const pointMatch = text.match(/(\d+)\s*分/)
+  if (pointMatch) {
+    const score = parseInt(pointMatch[1], 10)
+    if (score >= 0 && score <= total) return score
+  }
+  return -1
 }
 
 export default function PracticePage() {
@@ -189,7 +195,11 @@ function sum(n) {
         },
         abortRef.current.signal,
       )
-      addPractice({ topic, total: 3, correct: parseScore(fullText, 3) })
+      // 解析真实得分，失败时不写入记录避免污染统计
+      const score = parseScore(fullText, 3)
+      if (score >= 0) {
+        addPractice({ topic, total: 3, correct: score })
+      }
     } catch (err) {
       if (err instanceof Error && err.name === 'AbortError') {
         // 用户主动取消批改，保留已生成内容
