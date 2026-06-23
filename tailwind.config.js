@@ -7,17 +7,17 @@ export default {
   theme: {
     extend: {
       colors: {
-        'bg-deep': '#0a0a0f',
-        'bg-surface': '#12121a',
-        'bg-elevated': '#1a1a26',
-        'gold-primary': '#d4a853',
-        'gold-light': '#e8c878',
-        'gold-dim': '#8a6d2b',
-        'teal-accent': '#2dd4bf',
-        'teal-deep': '#0d9488',
-        'text-primary': '#f0ece4',
-        'text-secondary': '#9a958c',
-        'text-muted': '#5c584f',
+        'bg-deep': 'var(--bg-deep)',
+        'bg-surface': 'var(--bg-surface)',
+        'bg-elevated': 'var(--bg-elevated)',
+        'gold-primary': 'var(--gold-primary)',
+        'gold-light': 'var(--gold-light)',
+        'gold-dim': 'var(--gold-dim)',
+        'teal-accent': 'var(--teal-accent)',
+        'teal-deep': 'var(--teal-deep)',
+        'text-primary': 'var(--text-primary)',
+        'text-secondary': 'var(--text-secondary)',
+        'text-muted': 'var(--text-muted)',
       },
       fontFamily: {
         'display': ['Playfair Display', 'Noto Serif SC', 'serif'],

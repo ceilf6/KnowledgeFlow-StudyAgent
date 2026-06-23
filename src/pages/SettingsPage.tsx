@@ -40,10 +40,10 @@ export default function SettingsPage() {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div>
             <div className="section-label" style={{ marginBottom: '8px' }}>当前状态</div>
-            <div style={{ fontSize: '1.1rem', color: '#f0ece4' }}>
+            <div style={{ fontSize: '1.1rem', color: 'var(--text-primary)' }}>
               {isConfigured() ? '✅ 已就绪' : '⚠️ 未配置'}
             </div>
-            <div style={{ color: '#9a958c', fontSize: '0.9rem', marginTop: '4px' }}>
+            <div style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginTop: '4px' }}>
               {currentPreset?.label}
               {provider !== 'demo' && model ? ` · ${model}` : ''}
             </div>
@@ -65,18 +65,18 @@ export default function SettingsPage() {
                 onClick={() => handlePresetChange(preset.id)}
                 style={{
                   padding: '20px',
-                  background: provider === preset.id ? 'rgba(212, 168, 83, 0.08)' : '#0a0a0f',
-                  border: provider === preset.id ? '1px solid #d4a853' : '1px solid rgba(212, 168, 83, 0.12)',
+                  background: provider === preset.id ? 'var(--gold-glow)' : 'var(--bg-input)',
+                  border: provider === preset.id ? '1px solid var(--gold-primary)' : '1px solid var(--border-gold)',
                   borderRadius: '14px',
                   cursor: 'pointer',
                   textAlign: 'left',
                   transition: 'all 0.3s ease',
                 }}
               >
-                <div style={{ fontWeight: 600, color: provider === preset.id ? '#d4a853' : '#f0ece4', marginBottom: '6px' }}>
+                <div style={{ fontWeight: 600, color: provider === preset.id ? 'var(--gold-primary)' : 'var(--text-primary)', marginBottom: '6px' }}>
                   {preset.label}
                 </div>
-                <div style={{ fontSize: '0.82rem', color: '#9a958c', lineHeight: 1.5 }}>
+                <div style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
                   {preset.hint}
                 </div>
               </button>
@@ -105,7 +105,7 @@ export default function SettingsPage() {
                   {showKey ? '隐藏' : '显示'}
                 </button>
               </div>
-              <div style={{ fontSize: '0.8rem', color: '#5c584f', marginTop: '8px' }}>
+              <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '8px' }}>
                 🔒 API Key 仅存储在你浏览器的 localStorage 中，不会上传到任何服务器。
               </div>
             </div>
@@ -130,7 +130,7 @@ export default function SettingsPage() {
                 value={model}
                 onChange={(e) => setModel(e.target.value)}
               />
-              <div style={{ fontSize: '0.8rem', color: '#5c584f', marginTop: '8px' }}>
+              <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '8px' }}>
                 推荐模型：gpt-4o-mini（性价比高）/ gpt-4o（效果最好）/ deepseek-chat（国内友好）
               </div>
             </div>
@@ -144,9 +144,9 @@ export default function SettingsPage() {
       </div>
 
       {/* 安全提示 */}
-      <div className="app-card" style={{ borderColor: 'rgba(245, 158, 11, 0.2)' }}>
-        <div className="section-label" style={{ color: '#f59e0b', marginBottom: '12px' }}>安全说明</div>
-        <ul style={{ color: '#9a958c', fontSize: '0.88rem', lineHeight: 1.8, paddingLeft: '20px' }}>
+      <div className="app-card" style={{ borderColor: 'var(--warn-border)' }}>
+        <div className="section-label" style={{ color: 'var(--warn-color)', marginBottom: '12px' }}>安全说明</div>
+        <ul style={{ color: 'var(--text-secondary)', fontSize: '0.88rem', lineHeight: 1.8, paddingLeft: '20px' }}>
           <li>本产品为纯前端应用，所有数据存储在浏览器本地（localStorage）。</li>
           <li>API Key 仅用于直接从你的浏览器调用 AI 服务，不经过任何中间服务器。</li>
           <li>请勿在公共电脑上保存 API Key。</li>

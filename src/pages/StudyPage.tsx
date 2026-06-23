@@ -234,7 +234,7 @@ export default function StudyPage() {
                   </div>
                   <div className={`chat-content ${msg.role === 'user' ? 'user-content' : ''}`}>
                     {msg.role === 'user' ? (
-                      <p style={{ margin: 0, color: '#c9c4ba' }}>{msg.content}</p>
+                      <p style={{ margin: 0, color: 'var(--text-body)' }}>{msg.content}</p>
                     ) : (
                       <MarkdownView content={msg.content} />
                     )}
@@ -264,7 +264,7 @@ export default function StudyPage() {
 
             {/* 错误提示 */}
             {error && (
-              <div className="chat-content" style={{ borderColor: 'rgba(239, 68, 68, 0.3)', color: '#f87171' }}>
+              <div className="chat-content" style={{ borderColor: 'var(--error-border)', color: 'var(--error-color)' }}>
                 {error}
                 <br />
                 <button

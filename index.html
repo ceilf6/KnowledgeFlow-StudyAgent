@@ -4,6 +4,27 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>KnowledgeFlow — 让知识流入你的脑海</title>
+    <script>
+      // 主题防闪烁（FOUC prevention）：
+      // 必须在 stylesheet 和应用脚本之前同步执行，否则首帧会以 :root 默认（obsidian）渲染后跳变。
+      // 与 main.tsx 的 resolveSystemTheme() 保持一致逻辑，但此处为内联副本（无法 import 模块）。
+      (function () {
+        try {
+          var raw = localStorage.getItem('kf-settings');
+          var stored = raw ? JSON.parse(raw).state.theme : null;
+          var theme = stored || 'system';
+          var resolved = theme;
+          if (theme === 'system') {
+            resolved = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+              ? 'obsidian'
+              : 'daylight';
+          }
+          document.documentElement.setAttribute('data-theme', resolved);
+        } catch (e) {
+          document.documentElement.setAttribute('data-theme', 'obsidian');
+        }
+      })();
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
