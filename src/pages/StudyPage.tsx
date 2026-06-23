@@ -65,42 +65,46 @@ export default function StudyPage() {
       setStreaming(true)
       setStreamContent('')
       streamContentRef.current = ''
-      // demo 模式也接入 AbortController，让"停止"真正可取消
-      abortRef.current = new AbortController()
-      const signal = abortRef.current.signal
+      // 单一 controller 贯穿整个请求生命周期，避免 demo/real 分支各自创建导致 stop 失效
+      const myController = new AbortController()
+      abortRef.current = myController
+      const signal = myController.signal
 
       // 演示模式
       if (provider === 'demo') {
         const demoResp = getDemoResponse(text)
         if (!demoResp) {
           setStreaming(false)
+          if (abortRef.current === myController) abortRef.current = null
           return
         }
-        // 模拟流式输出，每步检查取消信号
-        let acc = ''
-        for (let i = 0; i < demoResp.length; i += 3) {
-          if (signal.aborted) break
-          acc += demoResp.slice(i, i + 3)
-          setStreamContent(acc)
-          streamContentRef.current = acc
-          await new Promise((r) => setTimeout(r, 12))
+        try {
+          // 模拟流式输出，每步检查取消信号
+          let acc = ''
+          for (let i = 0; i < demoResp.length; i += 3) {
+            if (signal.aborted) break
+            acc += demoResp.slice(i, i + 3)
+            setStreamContent(acc)
+            streamContentRef.current = acc
+            await new Promise((r) => setTimeout(r, 12))
+          }
+          // 如果被取消，保留已生成内容；否则保存完整内容
+          const finalContent = signal.aborted ? acc : demoResp
+          if (finalContent) {
+            addMessage(sessionId, { role: 'assistant', content: finalContent, ts: Date.now() })
+          }
+          setStreamContent('')
+          streamContentRef.current = ''
+          if (!signal.aborted) markLearned(text.slice(0, 30), 'learning')
+        } finally {
+          if (abortRef.current === myController) abortRef.current = null
+          setStreaming(false)
         }
-        // 如果被取消，保留已生成内容；否则保存完整内容
-        const finalContent = signal.aborted ? acc : demoResp
-        if (finalContent) {
-          addMessage(sessionId, { role: 'assistant', content: finalContent, ts: Date.now() })
-        }
-        setStreamContent('')
-        streamContentRef.current = ''
-        setStreaming(false)
-        if (!signal.aborted) markLearned(text.slice(0, 30), 'learning')
-        abortRef.current = null
         return
       }
 
       // 真实 API 调用
       try {
-        abortRef.current = new AbortController()
         // 用局部变量保存流式累计文本，避免闭包读取过期的 state
         let accText = ''
         await streamChat(
@@ -111,7 +115,7 @@ export default function StudyPage() {
             setStreamContent(accText)
             streamContentRef.current = accText
           },
-          abortRef.current.signal,
+          signal,
         )
         addMessage(sessionId, { role: 'assistant', content: accText, ts: Date.now() })
         setStreamContent('')
@@ -129,8 +133,8 @@ export default function StudyPage() {
         setStreamContent('')
         streamContentRef.current = ''
       } finally {
+        if (abortRef.current === myController) abortRef.current = null
         setStreaming(false)
-        abortRef.current = null
       }
     },
     [currentSessionId, streaming, provider, apiKey, baseURL, model, createSession, addMessage, markLearned, streamContent],

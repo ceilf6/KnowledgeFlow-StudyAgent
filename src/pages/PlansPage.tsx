@@ -61,27 +61,31 @@ export default function PlansPage() {
     setError('')
     setLoading(true)
     setPlan('')
-    // demo 模式也接入 AbortController
-    abortRef.current = new AbortController()
-    const signal = abortRef.current.signal
+    // 单一 controller 贯穿整个请求生命周期，避免 demo/real 分支各自创建导致 stop 失效
+    const myController = new AbortController()
+    abortRef.current = myController
+    const signal = myController.signal
 
     // 演示模式
     if (provider === 'demo') {
-      let acc = ''
-      for (let i = 0; i < DEMO_PLAN.length; i += 5) {
-        if (signal.aborted) break
-        acc += DEMO_PLAN.slice(i, i + 5)
-        setPlan(acc)
-        await new Promise((r) => setTimeout(r, 10))
+      try {
+        let acc = ''
+        for (let i = 0; i < DEMO_PLAN.length; i += 5) {
+          if (signal.aborted) break
+          acc += DEMO_PLAN.slice(i, i + 5)
+          setPlan(acc)
+          await new Promise((r) => setTimeout(r, 10))
+        }
+      } finally {
+        // 只在 controller 仍属于当前请求时清理，避免清掉用户重试后新请求的 controller
+        if (abortRef.current === myController) abortRef.current = null
+        setLoading(false)
       }
-      setLoading(false)
-      abortRef.current = null
       return
     }
 
     // 真实 API
     try {
-      abortRef.current = new AbortController()
       const messages: ChatMessage[] = [
         { role: 'system', content: PLAN_SYSTEM_PROMPT },
         { role: 'user', content: `请为以下学习目标生成知识路线：\n\n${goal}` },
@@ -95,24 +99,24 @@ export default function PlansPage() {
           accText += chunk
           setPlan(accText)
         },
-        abortRef.current.signal,
+        signal,
       )
     } catch (err) {
       if (err instanceof Error && err.name === 'AbortError') {
         // 用户主动取消，保留当前流式已生成内容（accText 已通过 setPlan 持续更新到 UI）
-        // 不需要额外操作，UI 已显示最新片段
       } else {
         setError(err instanceof Error ? err.message : '生成失败，请检查设置')
       }
     } finally {
+      if (abortRef.current === myController) abortRef.current = null
       setLoading(false)
-      abortRef.current = null
     }
   }
 
   const handleStop = () => {
+    // 只触发取消，不在这里设置 loading=false
+    // 让当前请求的 finally 统一收尾，避免用户立刻重试时旧 finally 清掉新 controller
     abortRef.current?.abort()
-    setLoading(false)
   }
 
   const SUGGESTED_GOALS = ['JavaScript 闭包', 'React Hooks', '数据结构 - 树', '线性代数基础', 'Python 面向对象']

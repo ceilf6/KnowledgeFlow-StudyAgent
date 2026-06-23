@@ -86,25 +86,28 @@ export default function PracticePage() {
     setQuestions('')
     setAnswers('')
     setUserAnswer('')
-    // demo 模式也接入 AbortController
-    abortRef.current = new AbortController()
-    const signal = abortRef.current.signal
+    // 单一 controller 贯穿整个请求生命周期
+    const myController = new AbortController()
+    abortRef.current = myController
+    const signal = myController.signal
 
     if (provider === 'demo') {
-      let acc = ''
-      for (let i = 0; i < DEMO_QUESTIONS.length; i += 5) {
-        if (signal.aborted) break
-        acc += DEMO_QUESTIONS.slice(i, i + 5)
-        setQuestions(acc)
-        await new Promise((r) => setTimeout(r, 10))
+      try {
+        let acc = ''
+        for (let i = 0; i < DEMO_QUESTIONS.length; i += 5) {
+          if (signal.aborted) break
+          acc += DEMO_QUESTIONS.slice(i, i + 5)
+          setQuestions(acc)
+          await new Promise((r) => setTimeout(r, 10))
+        }
+      } finally {
+        if (abortRef.current === myController) abortRef.current = null
+        setLoading(false)
       }
-      setLoading(false)
-      abortRef.current = null
       return
     }
 
     try {
-      abortRef.current = new AbortController()
       const messages: ChatMessage[] = [
         { role: 'system', content: PRACTICE_SYSTEM_PROMPT },
         { role: 'user', content: `请针对以下知识点出 3 道练习题：\n\n${topic}` },
@@ -117,7 +120,7 @@ export default function PracticePage() {
           fullText += chunk
           setQuestions(fullText)
         },
-        abortRef.current.signal,
+        signal,
       )
     } catch (err) {
       if (err instanceof Error && err.name === 'AbortError') {
@@ -126,6 +129,7 @@ export default function PracticePage() {
         setError(err instanceof Error ? err.message : '生成失败')
       }
     } finally {
+      if (abortRef.current === myController) abortRef.current = null
       setLoading(false)
     }
   }
@@ -133,6 +137,11 @@ export default function PracticePage() {
   const handleCheck = async () => {
     if (!userAnswer.trim() || checking) return
     setError('')
+
+    // 单一 controller 贯穿整个批改生命周期
+    const myController = new AbortController()
+    abortRef.current = myController
+    const signal = myController.signal
 
     if (provider === 'demo') {
       setChecking(true)
@@ -171,25 +180,27 @@ function sum(n) {
 
 ---
 **评分参考**：第 1 题答对计 1 分，第 2 题答对执行过程计 1 分，第 3 题写出正确函数计 1 分。满分 3 分。`
-      // demo 批改也接入取消信号
-      abortRef.current = new AbortController()
-      const checkSignal = abortRef.current.signal
-      let acc = ''
-      for (let i = 0; i < demoFeedback.length; i += 5) {
-        if (checkSignal.aborted) break
-        acc += demoFeedback.slice(i, i + 5)
-        setAnswers(acc)
-        await new Promise((r) => setTimeout(r, 10))
+      try {
+        let acc = ''
+        for (let i = 0; i < demoFeedback.length; i += 5) {
+          if (signal.aborted) break
+          acc += demoFeedback.slice(i, i + 5)
+          setAnswers(acc)
+          await new Promise((r) => setTimeout(r, 10))
+        }
+        // demo 模式也写入一条带 [示例] 标记的练习记录，让历史面板在默认体验下可见
+        if (!signal.aborted) {
+          addPractice({ topic: `[示例] ${topic}`, total: 3, correct: 2 })
+        }
+      } finally {
+        if (abortRef.current === myController) abortRef.current = null
+        setChecking(false)
       }
-      // 演示模式不写入练习记录，避免假分数污染统计数据
-      setChecking(false)
-      abortRef.current = null
       return
     }
 
     setChecking(true)
     try {
-      abortRef.current = new AbortController()
       const messages: ChatMessage[] = [
         {
           role: 'system',
@@ -206,7 +217,7 @@ function sum(n) {
           fullText += chunk
           setAnswers(fullText)
         },
-        abortRef.current.signal,
+        signal,
       )
       // 解析真实得分，失败时不写入记录避免污染统计
       const score = parseScore(fullText, 3)
@@ -220,6 +231,7 @@ function sum(n) {
         setError(err instanceof Error ? err.message : '批改失败')
       }
     } finally {
+      if (abortRef.current === myController) abortRef.current = null
       setChecking(false)
     }
   }
