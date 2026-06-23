@@ -46,7 +46,7 @@ Agents working in this repository should:
 4. Ask maintainers when docs conflict or the expected behavior is unclear.
 5. Keep changes scoped to the requested work and existing architecture.
 6. Run focused tests first, then broader gates as risk increases.
-7. **For non-trivial changes, follow the full Harness Loop in `AGENTS.md`** — Issue → branch → predev → implement → PR → wait for CI + Contract Guard + Repo Guard CR → address findings until `reviewDecision` is `APPROVED` → only then announce completion.
+7. **For non-trivial changes, follow the full Harness Loop in `AGENTS.md`** — Issue → branch → predev → implement → PR → wait for CI + Contract Guard + Repo Guard CR → address findings until Repo Guard's latest output on the current head commit is `处理建议: 批准` / `APPROVE` (posted as comment due to GitHub Actions limitation) or a formal `APPROVED` review → only then announce completion. Do NOT rely on `reviewDecision` alone.
 
 ## Agent Authority (Autonomous Mode)
 

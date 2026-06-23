@@ -242,6 +242,17 @@ test('docs/workflow.md delegates to AGENTS.md for full Harness Loop', () => {
   assert.ok(content.includes('NEVER announce done while CR is pending'), 'docs/workflow.md must restate the CR-pending prohibition');
 });
 
+test('mirror docs do not require reviewDecision APPROVED as sole completion criterion', () => {
+  // GitHub Actions cannot post formal APPROVED reviews (HTTP 422), so Repo Guard
+  // posts approval as a comment. Mirror docs must not re-introduce the old
+  // "reviewDecision must be APPROVED" rule that contradicts AGENTS.md.
+  const workflow = readRootFile('docs/workflow.md');
+  const claude = readRootFile('CLAUDE.md');
+  assert.ok(!/reviewDecision.*APPROVED/.test(workflow), 'docs/workflow.md must not require reviewDecision=APPROVED (conflicts with AGENTS.md comment-based approval)');
+  assert.ok(!/reviewDecision.*APPROVED/.test(claude), 'CLAUDE.md must not require reviewDecision=APPROVED (conflicts with AGENTS.md comment-based approval)');
+  assert.ok(workflow.includes('Do NOT rely on `reviewDecision` alone'), 'docs/workflow.md must warn against relying on reviewDecision alone');
+});
+
 test('AGENTS.md links SDD to Harness Loop', () => {
   const content = readRootFile('AGENTS.md');
   assert.ok(content.includes('SDD ⟶ Harness Loop linkage'), 'AGENTS.md missing SDD to Harness Loop linkage clause');
