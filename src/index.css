@@ -714,6 +714,7 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
+
 /* ─── RESPONSIVE ─── */
 @media (max-width: 1024px) {
   .hero-visual { display: none; }
