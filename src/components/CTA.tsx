@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 export default function CTA() {
   return (
     <section id="start" className="cta-section reveal">
@@ -10,9 +12,9 @@ export default function CTA() {
       <p className="section-desc">
         让 AI 成为你的专属学习助手，从第一个知识点开始，一步步构建属于你的知识体系。
       </p>
-      <button className="btn-primary">
+      <Link className="btn-primary" to="/study">
         立即开始 <span>→</span>
-      </button>
+      </Link>
     </section>
   )
 }

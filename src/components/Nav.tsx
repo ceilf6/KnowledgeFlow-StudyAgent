@@ -1,15 +1,18 @@
+import { Link } from 'react-router-dom'
+
 export default function Nav() {
   return (
     <nav className="nav-bar">
-      <a className="nav-logo" href="#">
+      <Link className="nav-logo" to="/">
         <div className="nav-logo-mark"></div>
         <span className="nav-logo-text">KnowledgeFlow</span>
-      </a>
+      </Link>
       <ul className="nav-links">
-        <li><a className="nav-link" href="#features">功能</a></li>
-        <li><a className="nav-link" href="#workflow">流程</a></li>
-        <li><a className="nav-link" href="#users">用户</a></li>
-        <li><a className="nav-link" href="#start">开始</a></li>
+        <li><Link className="nav-link" to="/study">学习</Link></li>
+        <li><Link className="nav-link" to="/plans">计划</Link></li>
+        <li><Link className="nav-link" to="/practice">练习</Link></li>
+        <li><Link className="nav-link" to="/resources">资源</Link></li>
+        <li><Link className="nav-link" to="/settings">设置</Link></li>
       </ul>
     </nav>
   )
