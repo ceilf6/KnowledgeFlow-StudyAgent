@@ -1,4 +1,4 @@
-export default function Hero({ onStart }: { onStart?: () => void }) {
+export default function Hero({ onStart, onLearnMore }: { onStart?: () => void; onLearnMore?: () => void }) {
   return (
     <section className="hero">
       <div className="hero-eyebrow">AI 驱动的学习平台</div>
@@ -16,9 +16,9 @@ export default function Hero({ onStart }: { onStart?: () => void }) {
         <button className="btn-primary" onClick={onStart}>
           开始学习 <span>→</span>
         </button>
-        <a className="btn-ghost" href="#features">
+        <button className="btn-ghost" onClick={onLearnMore}>
           了解更多
-        </a>
+        </button>
       </div>
 
       {/* Hero decorative rings */}

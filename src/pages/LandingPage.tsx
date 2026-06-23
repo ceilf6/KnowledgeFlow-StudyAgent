@@ -88,7 +88,10 @@ export default function LandingPage() {
 
       <div className="container">
         <Nav />
-        <Hero onStart={() => navigate('/study')} />
+        <Hero
+          onStart={() => navigate('/study')}
+          onLearnMore={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
+        />
         <Stats />
         <Features />
         <Workflow />

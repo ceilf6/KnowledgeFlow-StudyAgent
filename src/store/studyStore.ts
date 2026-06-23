@@ -30,6 +30,7 @@ export interface PracticeRecord {
   total: number
   correct: number
   createdAt: number
+  demo?: boolean
 }
 
 interface StudyState {
@@ -134,11 +135,13 @@ export const useStudyStore = create<StudyState>()(
         const { learned, practices } = get()
         const mastered = learned.filter((n) => n.status === 'mastered').length
         const learning = learned.filter((n) => n.status === 'learning').length
-        const totalPractices = practices.length
+        // 排除 demo 记录，避免示例分数污染真实统计
+        const realPractices = practices.filter((p) => !p.demo)
+        const totalPractices = realPractices.length
         const avgScore =
           totalPractices > 0
             ? Math.round(
-                (practices.reduce((sum, p) => sum + p.correct / p.total, 0) /
+                (realPractices.reduce((sum, p) => sum + p.correct / p.total, 0) /
                   totalPractices) *
                   100,
               )
